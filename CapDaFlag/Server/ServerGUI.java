@@ -55,6 +55,38 @@ public class ServerGUI extends Application {
 			}
 		}));
 		spawntimeline.play();
+		Timeline flagControll = new Timeline();
+		flagControll.setCycleCount(Timeline.INDEFINITE);
+		flagControll.getKeyFrames().add(new KeyFrame(Duration.millis(1), check -> {
+			for (int i = 0; i < gameServer.getServerClients().size(); i++) {
+				GameServerClient client = gameServer.getServerClients().get(i); 
+				double delx = client.getCircle().getLayoutX();
+				double dely = client.getCircle().getLayoutY();
+				try {
+				if (client.isTeamBlue()) {
+					if (!client.isDefender()) {
+						delx -= RedFlag.getLayoutX();
+						dely -= RedFlag.getLayoutY();
+						if (delx  < 2 && dely < 2) {
+						//	RedFlag.relocate(client.getCircle().getLayoutX(), client.getCircle().getLayoutY());
+						}
+					}
+				}else {
+					if (!client.isDefender()) {
+						delx -= Blueflag.getLayoutX();
+						dely -= Blueflag.getLayoutY();
+						if (delx  < 2 && dely < 2) {
+						//	Blueflag.relocate(client.getCircle().getLayoutX(), client.getCircle().getLayoutY());
+						}
+					}
+
+				}
+				}catch(Exception e ) {
+					
+				}
+			}
+		}));
+		flagControll.play();
 		movetimeline.setCycleCount(Timeline.INDEFINITE);
 		movetimeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000/60.0), e ->  {
 			try {
@@ -144,22 +176,6 @@ public class ServerGUI extends Application {
 		if (y> 5+client.getCircle().getRadius() && y< gameBoard.getHeight()- 5 -client.getCircle().getRadius() ) {
 			client.getCircle().setLayoutY(y );
 		}
-		if (!client.isDefender()) { //TODO
-			if (client.isTeamBlue()) {
-				if (
-						(client.getCircle().getLayoutX() + client.getCircle().getRadius() - RedFlag.getLayoutX() < 0 ||
-								client.getCircle().getLayoutX() + client.getCircle().getRadius() - RedFlag.getLayoutX() < 0 ) && 
-						(  client.getCircle().getLayoutY() + client.getCircle().getRadius() - RedFlag.getLayoutY() < 0    ||
-								client.getCircle().getLayoutY() + client.getCircle().getRadius() - RedFlag.getLayoutY() < 0  )
-						) {
-					RedFlag.layoutXProperty().bind(client.getCircle().layoutXProperty());
-					RedFlag.layoutYProperty().bind(client.getCircle().layoutYProperty());
-				}
-			}else {
-
-			}
-		}
-
 	}
 
 	@Override

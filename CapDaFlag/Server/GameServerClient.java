@@ -28,9 +28,6 @@ public class GameServerClient extends Thread{
 		circle.setOnMouseClicked(e ->{
 			System.out.println(this.getName());
 		});
-		playerStats = new PlayerStats( teamBlue);
-		playerStats.getX().bind(circle.layoutXProperty());
-		playerStats.getY().bind(circle.layoutYProperty());
 		this.start();
 	}
 
@@ -61,6 +58,7 @@ public class GameServerClient extends Thread{
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			try {
 				while (!this.isInterrupted()) {
+					playerStats = new PlayerStats( circle.getLayoutX(), circle.getLayoutY(), teamBlue);
 					Message message = (Message) in.readObject();
 					switch (message.getID()) {
 					case 1:
@@ -71,7 +69,7 @@ public class GameServerClient extends Thread{
 						break;
 					case 3:
 						out.writeObject(new Stats(flaglocations,playerStats));
-						System.out.println("SENT");
+					//	System.out.println("SENT");
 						out.reset();
 						break;
 					default:
