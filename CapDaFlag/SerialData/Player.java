@@ -25,5 +25,8 @@ public class Player extends Message  {
 	public void setHeading(double heading) {
 		this.heading = heading;
 	}
+	public boolean isDefensive() {
+		return defensive;
+	}
 	
 }

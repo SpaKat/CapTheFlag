@@ -4,8 +4,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import SerialData.FlagLocations;
 import SerialData.Message;
 import SerialData.Player;
+import SerialData.PlayerStats;
+import SerialData.Stats;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -14,14 +17,39 @@ public class GameServerClient extends Thread{
 	private Socket socket;
 	private Player player;
 	private Circle circle = new Circle(10,Color.WHITE);
-	public GameServerClient(Socket socket, boolean team) {
+	private boolean teamBlue;
+	private FlagLocations flaglocations;
+	private PlayerStats playerStats;
+	public GameServerClient(Socket socket, boolean team, FlagLocations flaglocations) {
+		this.setName("GameServerClient");
 		this.socket = socket;
-		if (team) {
-			circle.setFill(Color.BLUE);
-		} else {
-			circle.setFill(Color.RED);
-		}
+		this.teamBlue = team;
+		this.flaglocations = flaglocations;
+		circle.setOnMouseClicked(e ->{
+			System.out.println(this.getName());
+		});
+		playerStats = new PlayerStats( teamBlue);
+		playerStats.getX().bind(circle.layoutXProperty());
+		playerStats.getY().bind(circle.layoutYProperty());
 		this.start();
+	}
+
+	private void colorCircle(boolean team) {
+		String color;
+		String border;
+		if (team) {
+			color = "-fx-fill: blue;";
+		} else {
+			color = "-fx-fill: red;";
+		}
+		if (player.isDefensive()) {
+			border = "-fx-stroke: white;"
+					+ "-fx-stroke-width: 2;";
+		}else {
+			border = "-fx-stroke: black;"
+					+ "-fx-stroke-width: 2;";
+		}
+		circle.setStyle(color + border);
 	}
 
 	@Override
@@ -31,7 +59,6 @@ public class GameServerClient extends Thread{
 
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-
 			try {
 				while (!this.isInterrupted()) {
 					Message message = (Message) in.readObject();
@@ -39,7 +66,13 @@ public class GameServerClient extends Thread{
 					case 1:
 						//player
 						player = (Player) message;
-						System.out.println("YES!!!!!!");
+						colorCircle(teamBlue);
+						//System.out.println(((Player) message).getHeading());
+						break;
+					case 3:
+						out.writeObject(new Stats(flaglocations,playerStats));
+						System.out.println("SENT");
+						out.reset();
 						break;
 					default:
 						//System.out.println("NO");
@@ -47,22 +80,28 @@ public class GameServerClient extends Thread{
 					}
 					Thread.sleep(1);
 				}
-				
-				
+
+
 			}catch (EOFException e) {
-				System.err.println("OUTo");
+				//System.err.println("OUTo");
 			}
 		}catch (Exception e) {
-			e.printStackTrace();		
+			//e.printStackTrace();		
 		}
-		System.out.println("Died");
+		//System.out.println("Died");
 	}
 	public Circle getCircle() {
 		return circle;
 	}
-
+	public boolean isTeamBlue() {
+		return teamBlue;
+	}
 	public double getHeading() {
-		// TODO Auto-generated method stub
 		return player.getHeading();
+	}
+
+	public boolean isDefender() {
+		// TODO Auto-generated method stub
+		return player.isDefensive();
 	}
 }
