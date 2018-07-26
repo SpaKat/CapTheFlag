@@ -136,12 +136,15 @@ public class ServerGUI extends Application {
 			if (defender.isDefender()) {
 				for (int j = 0; j < gameServer.getServerClients().size(); j++) {
 					GameServerClient attacker = gameServer.getServerClients().get(j); 
-					if(!attacker.isDefender()) {
+					if(!attacker.isDefender() && !attacker.equals(defender) && attacker.isTeamBlue() != defender.isTeamBlue()) {
 						double deltax = Math.abs( defender.getCircle().getLayoutX() - attacker.getCircle().getLayoutX());
 						double deltay = Math.abs( defender.getCircle().getLayoutY() - attacker.getCircle().getLayoutY());
 						double rad = defender.getCircle().getRadius() + attacker.getCircle().getRadius();
-						if ( deltax < rad && deltay <rad) {
+						double distance = Math.sqrt( Math.pow(deltax, 2) + Math.pow(deltay, 2)  );
+						
+						if ( distance<2) {
 							gameServer.killcilent(attacker);
+							System.out.println(distance);
 						}
 					}
 				}
