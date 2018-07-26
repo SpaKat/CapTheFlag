@@ -1,4 +1,4 @@
-package SerialData;
+
 import java.io.Serializable;
 
 public class OtherPlayer implements Serializable {

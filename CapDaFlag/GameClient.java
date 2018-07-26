@@ -1,15 +1,7 @@
-package Client;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import SerialData.FlagLocations;
-import SerialData.Home;
-import SerialData.Message;
-import SerialData.OtherPlayers;
-import SerialData.Player;
-import SerialData.PlayerStats;
-import SerialData.Stats;
-import SerialData.noDefend;
 
 public class GameClient extends Thread {
 	private Player p = new Player();

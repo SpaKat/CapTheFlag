@@ -1,4 +1,4 @@
-package SerialData;
+
 
 public class FlagLocations extends Message {
 

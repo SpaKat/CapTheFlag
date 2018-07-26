@@ -1,18 +1,10 @@
-package Server;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import SerialData.FlagLocations;
-import SerialData.Home;
-import SerialData.Message;
-import SerialData.OtherPlayers;
-import SerialData.Player;
-import SerialData.PlayerStats;
-import SerialData.Stats;
-import SerialData.noDefend;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 

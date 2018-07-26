@@ -6,3 +6,13 @@
 /GameClient.class
 /GameServerClient.class
 /OtherPlayer.class
+/FlagLocations.class
+/Home.class
+/Message.class
+/OtherPlayers.class
+/Player.class
+/PlayerStats.class
+/Stats.class
+/noDefend.class
+/ServerGUI.class
+/ToggledCircle.class

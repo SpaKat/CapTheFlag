@@ -1,11 +1,7 @@
-package Server;
+
 
 import java.util.Random;
 
-import SerialData.FlagLocations;
-import SerialData.Home;
-import SerialData.OtherPlayers;
-import SerialData.OtherPlayer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
