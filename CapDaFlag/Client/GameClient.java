@@ -88,7 +88,7 @@ public class GameClient extends Thread {
 
 			}
 			//System.out.println(heading *180/Math.PI);
-		}/*else {
+		}else {
 
 						if( Math.abs( fl.getBlueX() - ps.getX()  ) < 1 &&  Math.abs( fl.getBlueY() - ps.getY()  ) <1  ) {
 							double deltax = home.getRedStartX() - ps.getX();
@@ -107,7 +107,7 @@ public class GameClient extends Thread {
 						}
 
 
-					}*/
+					}
 		return heading;
 	}
 	public static void main(String[] args) throws Exception{
