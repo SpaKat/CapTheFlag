@@ -10,7 +10,6 @@ public class Player extends Message  {
 	public Player() {
 		setID(1);
 	}
-	
 	public void changeType(){
 		defensive = !defensive;
 	}
@@ -27,6 +26,9 @@ public class Player extends Message  {
 	}
 	public boolean isDefensive() {
 		return defensive;
+	}
+	public void setDefensive(boolean defensive) {
+		this.defensive = defensive;
 	}
 	
 }
