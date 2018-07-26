@@ -4,6 +4,8 @@ import java.util.Random;
 
 import SerialData.FlagLocations;
 import SerialData.Home;
+import SerialData.OtherPlayers;
+import SerialData.OtherPlayer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -33,6 +35,7 @@ public class ServerGUI extends Application {
 	private double RedstartY;
 	private Home homebase;
 	private boolean start = false;
+	private OtherPlayers otherPlayers;
 	public ServerGUI() {
 		gameServer = new GameServer();
 
@@ -50,7 +53,8 @@ public class ServerGUI extends Application {
 		BluestartY = gameBoard.getHeight()-55;
 		homebase = new Home(RedstartX, RedstartY, BluestartX, BluestartY);
 		gameServer.setHomebase(homebase);
-
+		otherPlayers = new OtherPlayers(null);
+		gameServer.setOtherPlayers(otherPlayers);
 		movetimeline.setCycleCount(Timeline.INDEFINITE);
 		movetimeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), e ->  {
 			try {
@@ -75,10 +79,10 @@ public class ServerGUI extends Application {
 	private void DefenderRadiusCheck() {
 		for (int i = 0; i < gameServer.getServerClients().size(); i++) {
 			GameServerClient defender = gameServer.getServerClients().get(i); 
-			
+
 			double radX = Math.abs( RedFlag.getLayoutX() - Blueflag.getLayoutX())/5;
 			double radY = Math.abs( RedFlag.getLayoutY() - Blueflag.getLayoutY())/5;
-			
+
 			if(defender.isDefender()) {
 				if(defender.isTeamBlue()) {
 					double x = Math.abs( defender.getCircle().getLayoutX() - Blueflag.getLayoutX());
@@ -190,10 +194,21 @@ public class ServerGUI extends Application {
 
 		FlagLocations fl = new FlagLocations(RedFlag.getLayoutX(),RedFlag.getLayoutY(),Blueflag.getLayoutX(),Blueflag.getLayoutY());
 		homebase = new Home(RedstartX, RedstartY, BluestartX, BluestartY);
+
 		for (int i = 0; i < gameServer.getServerClients().size(); i++) {
 			GameServerClient client = gameServer.getServerClients().get(i); 
 			client.setFlaglocations(fl);
 			client.setHomebase(homebase);
+			OtherPlayer[] op = new OtherPlayer[gameServer.getServerClients().size()-1];
+			int counter = 0;
+			for (int j = 0; j < gameServer.getServerClients().size(); j++) {
+				GameServerClient otherclient = gameServer.getServerClients().get(j);
+				if(!client.equals (otherclient)){
+					op[counter++] = new OtherPlayer(otherclient.getCircle().getLayoutX(), otherclient.getCircle().getLayoutY(), otherclient.isTeamBlue(), otherclient.isDefender());
+				}
+			}
+			otherPlayers = new OtherPlayers(op);
+			client.setOtherPlayers(otherPlayers);
 		}
 	}
 

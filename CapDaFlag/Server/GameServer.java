@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import SerialData.FlagLocations;
 import SerialData.Home;
+import SerialData.OtherPlayers;
 
 public class GameServer extends Thread{
 
@@ -14,6 +15,7 @@ public class GameServer extends Thread{
 	private ArrayList<GameServerClient> serverClients;
 	private FlagLocations flaglocations;
 	private Home homebase;
+	private OtherPlayers otherPlayers;
 	public GameServer() {
 		serverClients = new ArrayList<>();
 		this.start();
@@ -28,7 +30,7 @@ public class GameServer extends Thread{
 				Socket socket = serverSocket.accept();
 				if(serverClients.size()<51) {
 					synchronized (serverClients) {
-						serverClients.add(new GameServerClient(socket,team,flaglocations,homebase));
+						serverClients.add(new GameServerClient(socket,team,flaglocations,homebase,otherPlayers));
 						team = !team;
 					}
 				}
@@ -59,7 +61,9 @@ public class GameServer extends Thread{
 		return serverClients;
 	}
 	
-
+public void setOtherPlayers(OtherPlayers otherPlayers) {
+	this.otherPlayers = otherPlayers;
+}
 	public void die() {
 		try {
 

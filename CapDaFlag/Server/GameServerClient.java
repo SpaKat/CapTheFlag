@@ -8,6 +8,7 @@ import java.net.Socket;
 import SerialData.FlagLocations;
 import SerialData.Home;
 import SerialData.Message;
+import SerialData.OtherPlayers;
 import SerialData.Player;
 import SerialData.PlayerStats;
 import SerialData.Stats;
@@ -25,7 +26,8 @@ public class GameServerClient extends Thread{
 	private PlayerStats playerStats;
 	private Home homebase;
 	private int sendCommand = 0;
-	public GameServerClient(Socket socket, boolean team, FlagLocations flaglocations,Home homebase) {
+	private OtherPlayers otherPlayers;
+	public GameServerClient(Socket socket, boolean team, FlagLocations flaglocations,Home homebase,OtherPlayers otherPlayers) {
 		this.setName("GameServerClient");
 		this.socket = socket;
 		this.teamBlue = team;
@@ -81,7 +83,7 @@ public class GameServerClient extends Thread{
 						//System.out.println(((Player) message).getHeading());
 					}
 					if(id == 3) {
-						out.writeObject(new Stats(flaglocations,playerStats,homebase));
+						out.writeObject(new Stats(flaglocations,playerStats,homebase,otherPlayers));
 						//	System.out.println("SENT");
 						out.flush();
 						Thread.sleep(1);
@@ -151,5 +153,8 @@ public class GameServerClient extends Thread{
 	}
 	public void free() {
 		sendCommand = 0;
+	}
+	public void setOtherPlayers(OtherPlayers otherPlayers) {
+		this.otherPlayers = otherPlayers;
 	}
 }
