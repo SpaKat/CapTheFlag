@@ -76,10 +76,10 @@ public class ServerGUI extends Application {
 		for (int i = 0; i < gameServer.getServerClients().size(); i++) {
 			GameServerClient defender = gameServer.getServerClients().get(i); 
 
-			double radX = Math.abs( RedFlag.getLayoutX() - Blueflag.getLayoutX())/5;
-			double radY = Math.abs( RedFlag.getLayoutY() - Blueflag.getLayoutY())/5;
+			double radX = Math.abs( RedFlag.getLayoutX() - Blueflag.getLayoutX())/3;
+			double radY = Math.abs( RedFlag.getLayoutY() - Blueflag.getLayoutY())/3;
 
-			if(defender.isDefender()) {
+		//	if(defender.isDefender()) {
 				if(defender.isTeamBlue()) {
 					double x = Math.abs( defender.getCircle().getLayoutX() - Blueflag.getLayoutX());
 					double y = Math.abs( defender.getCircle().getLayoutY() - Blueflag.getLayoutY());
@@ -99,7 +99,9 @@ public class ServerGUI extends Application {
 						defender.free();
 					}
 				}
-			}
+		//	}
+			
+			
 		}
 	}
 
@@ -159,7 +161,7 @@ public class ServerGUI extends Application {
 			double deltbluex = Math.abs(Blueflag.getLayoutX() - RedstartX);
 			double deltbluey = Math.abs(Blueflag.getLayoutY() - RedstartY);
 
-			if (deltredx < 1 && deltredy < 1) {
+			if (deltredx < 2 && deltredy < 2) {
 				//blue wins
 				WinpopUP("Blue Wins");
 				gameServer.killcilents();
@@ -168,7 +170,7 @@ public class ServerGUI extends Application {
 
 			}
 
-			if (deltbluex < 1 && deltbluey < 1) {
+			if (deltbluex < 2 && deltbluey < 2) {
 				//red wins
 				WinpopUP("Red Wins");
 				gameServer.killcilents();

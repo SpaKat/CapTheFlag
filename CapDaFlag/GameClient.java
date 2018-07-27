@@ -118,6 +118,7 @@ public class GameClient extends Thread {
 		
 		// move if on blue team
 		player.setDefensive(true);
+		
 		if(playerStats.isBlueteam()) {
 			if( Math.abs( flagLocations.getRedX() - playerStats.getX()  ) < 1 &&  Math.abs( flagLocations.getRedY() - playerStats.getY()  ) <1  ) {
 				// go get the Flag
