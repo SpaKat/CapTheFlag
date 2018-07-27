@@ -139,9 +139,7 @@ public class ServerGUI extends Application {
 					if(!attacker.isDefender() && !attacker.equals(defender) && attacker.isTeamBlue() != defender.isTeamBlue()) {
 						double deltax = Math.abs( defender.getCircle().getLayoutX() - attacker.getCircle().getLayoutX());
 						double deltay = Math.abs( defender.getCircle().getLayoutY() - attacker.getCircle().getLayoutY());
-						double rad = defender.getCircle().getRadius() + attacker.getCircle().getRadius();
 						double distance = Math.sqrt( Math.pow(deltax, 2) + Math.pow(deltay, 2)  );
-						
 						if ( distance<2) {
 							gameServer.killcilent(attacker);
 							System.out.println(distance);

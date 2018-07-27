@@ -25,7 +25,7 @@ public class GameClient extends Thread {
 			out.writeObject(new Stats());
 			out.reset();
 
-			for (int i = 0; i < 5000; i++) {
+			for (int i = 0; i < 5000000; i++) {
 				player.setHeading(heading);
 				out.writeObject(new Stats());
 				out.reset();
@@ -45,12 +45,10 @@ public class GameClient extends Thread {
 					playerStats = stats.getPs();
 					homelocation = stats.getHomebase();
 					otherPlayers = stats.getOtherPlayers();
-					System.out.println(otherPlayers.getOtherPlayers().length);
+				//	System.out.println(otherPlayers.getOtherPlayers().length);
 					heading = mycontrols(heading);
-
 					out.writeObject(player);
-					out.flush();
-
+					out.reset();
 				}
 			}
 
@@ -119,6 +117,7 @@ public class GameClient extends Thread {
 		**/
 		
 		// move if on blue team
+		player.setDefensive(true);
 		if(playerStats.isBlueteam()) {
 			if( Math.abs( flagLocations.getRedX() - playerStats.getX()  ) < 1 &&  Math.abs( flagLocations.getRedY() - playerStats.getY()  ) <1  ) {
 				// go get the Flag
@@ -158,7 +157,7 @@ public class GameClient extends Thread {
 		return heading;
 	}
 	public static void main(String[] args) throws Exception{
-		for(int i = 0; i< 20; i ++)
+		for(int i = 0; i< 1; i ++)
 		{
 			new GameClient("127.0.0.1"); // change ip
 		}
