@@ -7,6 +7,7 @@ public class Player extends Message  {
 	// false = offensive
 	private boolean defensive = true; 
 	private double heading = 0;
+	private boolean blueteam = true; 
 	public Player() {
 		setID(1);
 	}
@@ -30,5 +31,10 @@ public class Player extends Message  {
 	public void setDefensive(boolean defensive) {
 		this.defensive = defensive;
 	}
-	
+	public boolean isBlueteam() {
+		return blueteam;
+	}
+	public void setBlueteam(boolean blueteam) {
+		this.blueteam = blueteam;
+	}
 }

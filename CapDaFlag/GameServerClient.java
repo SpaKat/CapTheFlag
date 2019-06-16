@@ -13,16 +13,14 @@ public class GameServerClient extends Thread{
 	private Socket socket;
 	private Player player =new Player();
 	private Circle circle = new Circle(10,Color.WHITE);
-	private boolean teamBlue;
 	private FlagLocations flaglocations;
 	private PlayerStats playerStats;
 	private Home homebase;
 	private int sendCommand = 0;
 	private OtherPlayers otherPlayers;
-	public GameServerClient(Socket socket, boolean team, FlagLocations flaglocations,Home homebase,OtherPlayers otherPlayers) {
+	public GameServerClient(Socket socket, FlagLocations flaglocations,Home homebase,OtherPlayers otherPlayers) {
 		this.setName("GameServerClient");
 		this.socket = socket;
-		this.teamBlue = team;
 		this.flaglocations = flaglocations;
 		this.homebase = homebase;
 		circle.setOnMouseClicked(e ->{
@@ -59,7 +57,7 @@ public class GameServerClient extends Thread{
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			try {
 				while (!this.isInterrupted()) {
-					playerStats = new PlayerStats( circle.getLayoutX(), circle.getLayoutY(), teamBlue);
+					
 					Message message = (Message) in.readObject();
 					int id = message.getID();
 
@@ -70,7 +68,8 @@ public class GameServerClient extends Thread{
 						if (sendCommand == 10) {
 							player.setDefensive(false);
 						}
-						colorCircle(teamBlue);
+						playerStats = new PlayerStats( circle.getLayoutX(), circle.getLayoutY(), player.isBlueteam());
+						colorCircle(player.isBlueteam());
 
 						//System.out.println(((Player) message).getHeading());
 					}
@@ -113,7 +112,7 @@ public class GameServerClient extends Thread{
 		return circle;
 	}
 	public boolean isTeamBlue() {
-		return teamBlue;
+		return player.isBlueteam();
 	}
 	public double getHeading() {
 		return player.getHeading();

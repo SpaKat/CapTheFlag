@@ -4,7 +4,6 @@ import javafx.scene.shape.Circle;
 
 public class ToggledCircle extends Circle {
 	private boolean taken= false;
-	
 	public ToggledCircle(int i) {
 		super(i);
 	}

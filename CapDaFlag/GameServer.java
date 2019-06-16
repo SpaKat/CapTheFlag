@@ -21,14 +21,12 @@ public class GameServer extends Thread{
 	public void run() {
 		try {
 			serverSocket = new  ServerSocket(port);
-			boolean team = true;
 			while (!this.isInterrupted()) {
 				Socket socket = serverSocket.accept();
 				if(serverClients.size()<51) {
-					synchronized (serverClients) {
-						serverClients.add(new GameServerClient(socket,team,flaglocations,homebase,otherPlayers));
-						team = !team;
-					}
+					//synchronized (serverClients) {
+						serverClients.add(new GameServerClient(socket,flaglocations,homebase,otherPlayers));
+					//}
 				}
 			}
 			serverSocket.close();

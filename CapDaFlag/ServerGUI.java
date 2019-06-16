@@ -12,7 +12,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -76,32 +78,39 @@ public class ServerGUI extends Application {
 		for (int i = 0; i < gameServer.getServerClients().size(); i++) {
 			GameServerClient defender = gameServer.getServerClients().get(i); 
 
-			double radX = Math.abs( RedFlag.getLayoutX() - Blueflag.getLayoutX())/3;
-			double radY = Math.abs( RedFlag.getLayoutY() - Blueflag.getLayoutY())/3;
-
-		//	if(defender.isDefender()) {
-				if(defender.isTeamBlue()) {
-					double x = Math.abs( defender.getCircle().getLayoutX() - Blueflag.getLayoutX());
-					double y = Math.abs( defender.getCircle().getLayoutY() - Blueflag.getLayoutY());
-					//System.out.println(x>radX && y>radY);
-					if (x>radX && y>radY) {
-						defender.noDefence();
-					}else {
-						defender.free();
-					}
-				}else {
-					double x = Math.abs( defender.getCircle().getLayoutX() - RedFlag.getLayoutX());
-					double y = Math.abs( defender.getCircle().getLayoutY() - RedFlag.getLayoutY());
-					//System.out.println(x>radX && y>radY);
-					if (x>radX && y>radY) {
-						defender.noDefence();
-					}else {
-						defender.free();
-					}
+			double limit = 50;
+			double x = 2*limit;
+			double y = 2*limit;
+			
+			x = Math.abs( defender.getCircle().getLayoutX() - Blueflag.getLayoutX());
+			y = Math.abs( defender.getCircle().getLayoutY() - Blueflag.getLayoutY());
+			double bluedistance = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
+			
+			x = Math.abs( defender.getCircle().getLayoutX() - RedFlag.getLayoutX());
+			y = Math.abs( defender.getCircle().getLayoutY() - RedFlag.getLayoutY());
+			double reddistance = Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2) );
+			
+			if(defender.isTeamBlue()) {
+				if (!Blueflag.isTaken()) {
+					changeDefender(defender, limit, bluedistance);
+					changeDefender(defender, limit, reddistance);
 				}
-		//	}
+			}else {
+				if (!RedFlag.isTaken()) {
+					changeDefender(defender, limit, reddistance);
+					changeDefender(defender, limit, bluedistance);
+				}
+			}
 			
 			
+		}
+	}
+
+	public void changeDefender(GameServerClient defender, double limit, double distance) {
+		if (distance<limit) {
+			defender.noDefence();
+		}else {
+			defender.free();
 		}
 	}
 
@@ -144,7 +153,7 @@ public class ServerGUI extends Application {
 						double distance = Math.sqrt( Math.pow(deltax, 2) + Math.pow(deltay, 2)  );
 						if ( distance<2) {
 							gameServer.killcilent(attacker);
-							System.out.println(distance);
+							//System.out.println(distance);
 						}
 					}
 				}
@@ -320,19 +329,23 @@ public class ServerGUI extends Application {
 			RedstartX = 55;
 			RedstartY = 55;
 
-			RedFlag.relocate(RedstartX, RedstartY);
-
+			//RedFlag.relocate(RedstartX, RedstartY);
+			RedFlag.setLayoutX(RedstartX);
+			RedFlag.setLayoutY(RedstartY);
 			start =true;
 
 			Blueflag.layoutXProperty().unbind();
 			Blueflag.layoutYProperty().unbind();
 			BluestartX = gameBoard.getWidth()-55;
 			BluestartY = gameBoard.getHeight()-55;
-			Blueflag.relocate(BluestartX, BluestartY);
+			//Blueflag.relocate(BluestartX, BluestartY);
+			Blueflag.setLayoutX(BluestartX);
+			Blueflag.setLayoutY(BluestartY);
 
 			gameServer.setFlaglocations(new FlagLocations(RedFlag.getLayoutX(), RedFlag.getLayoutY(), Blueflag.getLayoutX(), Blueflag.getLayoutY()));
 		});
 		flagCon.getChildren().addAll(spawn);
+
 		return flagCon;
 	}
 
